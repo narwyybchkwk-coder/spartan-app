@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>اسپارتان</title>
+<style>
+body{margin:0;background:#111;color:white;font-family:sans-serif}
+header{text-align:center;padding:18px;border-bottom:1px solid #333}
+main{padding:16px}.page{display:none}.active{display:block}
+.item{background:#1d1d1d;margin:10px 0;padding:18px;border-radius:14px}
+#chat{height:50vh;overflow:auto;background:#181818;padding:10px;border-radius:12px}
+.msg{background:#292929;padding:10px;margin:8px 0;border-radius:10px}
+input{width:65%;padding:13px;border:0;border-radius:10px}
+button{padding:13px;border:0;border-radius:10px}
+</style>
+</head>
+<body>
+<header><h1>⚔️ اسپارتان</h1></header>
+<main>
+<section id="home" class="page active">
+<h2>صفحه اصلی</h2>
+<div class="item" onclick="openPage('messages')">💬 پیام‌ها</div>
+<div class="item">👥 گروه‌ها</div>
+<div class="item">📢 کانال‌ها</div>
+<div class="item" onclick="openPage('profile')">👤 پروفایل</div>
+</section>
+
+<section id="messages" class="page">
+<h2>💬 چت آزمایشی</h2>
+<div id="chat"></div>
+<input id="message" placeholder="پیامت را بنویس">
+<button onclick="sendMessage()">ارسال</button>
+<br><br>
+<button onclick="openPage('home')">بازگشت</button>
+</section>
+
+<section id="profile" class="page">
+<h2>👤 پروفایل</h2>
+<p>پروفایل اسپارتان</p>
+<button onclick="openPage('home')">بازگشت</button>
+</section>
+</main>
+<script>
+function openPage(p){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+document.getElementById(p).classList.add("active");
+}
+window.addEventListener("load",()=>{JSON.parse(localStorage.getItem("spartan_messages")||"[]").forEach(t=>{let m=document.createElement("div");m.className="msg";m.textContent="شما: "+t;document.getElementById("chat").appendChild(m); fetch("http://127.0.0.1:5000/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t})});});}); function sendMessage(){
+let i=document.getElementById("message"),t=i.value.trim();
+if(!t)return;
+localStorage.setItem("spartan_messages", JSON.stringify([...(JSON.parse(localStorage.getItem("spartan_messages")||"[]")), t])); let m=document.createElement("div");
+m.className="msg";
+m.textContent="شما: "+t;
+document.getElementById("chat").appendChild(m); fetch("http://127.0.0.1:5000/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t})});
+i.value="";
+}
+</script>
+</body>
+</html>
