@@ -46,13 +46,13 @@ function openPage(p){
 document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
 document.getElementById(p).classList.add("active");
 }
-window.addEventListener("load",()=>{JSON.parse(localStorage.getItem("spartan_messages")||"[]").forEach(t=>{let m=document.createElement("div");m.className="msg";m.textContent="شما: "+t;document.getElementById("chat").appendChild(m); fetch("http://127.0.0.1:5000/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t})});});}); function sendMessage(){
+window.addEventListener("load",()=>{JSON.parse(localStorage.getItem("spartan_messages")||"[]").forEach(t=>{let m=document.createElement("div");m.className="msg";m.textContent="شما: "+t;document.getElementById("chat").appendChild(m); fetch("/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t})});});}); function sendMessage(){
 let i=document.getElementById("message"),t=i.value.trim();
 if(!t)return;
 localStorage.setItem("spartan_messages", JSON.stringify([...(JSON.parse(localStorage.getItem("spartan_messages")||"[]")), t])); let m=document.createElement("div");
 m.className="msg";
 m.textContent="شما: "+t;
-document.getElementById("chat").appendChild(m); fetch("http://127.0.0.1:5000/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t})});
+document.getElementById("chat").appendChild(m); fetch("/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:t})});
 i.value="";
 }
 </script>
